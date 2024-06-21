@@ -32,7 +32,7 @@ use const PHP_ROUND_HALF_UP;
  *
  * @psalm-immutable
  */
-final class Money implements JsonSerializable
+class Money implements JsonSerializable
 {
     use MoneyFactory;
 
