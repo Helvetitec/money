@@ -7,6 +7,7 @@ namespace Money;
 use InvalidArgumentException;
 use JsonSerializable;
 use Money\Calculator\BcMathCalculator;
+use Livewire\Wireable;
 
 use function array_fill;
 use function array_keys;
@@ -32,7 +33,7 @@ use const PHP_ROUND_HALF_UP;
  *
  * @psalm-immutable
  */
-class Money implements JsonSerializable
+final class Money implements JsonSerializable, Wireable
 {
     use MoneyFactory;
 
@@ -536,5 +537,20 @@ class Money implements JsonSerializable
     public static function getCalculator(): string
     {
         return self::$calculator;
+    }
+
+    public function toLivewire()
+    {
+        return [
+            'amount' => $this->getAmount(),
+            'currency' => $this->getCurrency()->getCode(),
+        ];
+    }
+
+    public static function fromLivewire($value)
+    {
+        $amount = $value['amount'];
+        $currency = $value['currency'];
+        return new static($amount, new Currency($currency));
     }
 }
