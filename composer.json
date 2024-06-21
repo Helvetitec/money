@@ -1,5 +1,5 @@
 {
-    "name": "moneyphp/money",
+    "name": "helvetitec/money",
     "description": "PHP implementation of Fowler's Money pattern",
     "license": "MIT",
     "keywords": [
@@ -20,6 +20,10 @@
         {
             "name": "Frederik Bosch",
             "email": "f.bosch@genkgo.nl"
+        },
+        {
+            "name": "Roman Arthur Wanner",
+            "email": "contact@helvetitec.com"
         }
     ],
     "homepage": "http://moneyphp.org",
