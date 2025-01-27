@@ -577,6 +577,6 @@ final class Money implements JsonSerializable, Wireable
 
     public function __toString()
     {
-        return json_decode($this->toLivewire());
+        return json_encode($this->toLivewire());
     }
 }
