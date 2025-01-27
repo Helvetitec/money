@@ -574,4 +574,9 @@ final class Money implements JsonSerializable, Wireable
         $currency = $value['currency'];
         return new static($amount, new Currency($currency));
     }
+
+    public function __toString()
+    {
+        return json_decode($this->toLivewire());
+    }
 }
