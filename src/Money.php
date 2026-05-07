@@ -6,8 +6,8 @@ namespace Money;
 
 use JsonSerializable;
 use Money\Calculator\BcMathCalculator;
-use Livewire\Wireable;
 use Money\Exception\InvalidArgumentException;
+use Livewire\Wireable;
 
 use function array_fill;
 use function array_keys;
@@ -574,10 +574,6 @@ final class Money implements JsonSerializable, Wireable
         ];
     }
 
-    /**
-     * @param mixed $value
-     * @return static
-     */
     public static function fromLivewire(mixed $value): static
     {
         $amount = $value['amount'];
@@ -585,7 +581,7 @@ final class Money implements JsonSerializable, Wireable
         return new static($amount, new Currency($currency));
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode($this->toLivewire());
     }
