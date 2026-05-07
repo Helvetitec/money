@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Money;
 
-use InvalidArgumentException;
 use JsonSerializable;
 use Money\Calculator\BcMathCalculator;
 use Livewire\Wireable;
+use Money\Exception\InvalidArgumentException;
 
 use function array_fill;
 use function array_keys;
@@ -136,10 +136,10 @@ final class Money implements JsonSerializable, Wireable
     {
         // Note: non-strict equality is intentional here, since `Currency` is `final` and reliable.
         if ($this->currency != $other->currency) {
-            throw new InvalidArgumentException('Currencies must be identical');
+            throw InvalidArgumentException::currencyMismatch();
         }
 
-        // @phpstan-ignore possiblyImpure.methodCall
+        // @phpstan-ignore impure.staticPropertyAccess, possiblyImpure.methodCall
         return self::$calculator::compare($this->amount, $other->amount);
     }
 
@@ -210,10 +210,10 @@ final class Money implements JsonSerializable, Wireable
         foreach ($addends as $addend) {
             // Note: non-strict equality is intentional here, since `Currency` is `final` and reliable.
             if ($this->currency != $addend->currency) {
-                throw new InvalidArgumentException('Currencies must be identical');
+                throw InvalidArgumentException::currencyMismatch();
             }
 
-            // @phpstan-ignore possiblyImpure.methodCall
+            // @phpstan-ignore impure.staticPropertyAccess, possiblyImpure.methodCall
             $amount = self::$calculator::add($amount, $addend->amount);
         }
 
@@ -233,10 +233,10 @@ final class Money implements JsonSerializable, Wireable
         foreach ($subtrahends as $subtrahend) {
             // Note: non-strict equality is intentional here, since `Currency` is `final` and reliable.
             if ($this->currency != $subtrahend->currency) {
-                throw new InvalidArgumentException('Currencies must be identical');
+                throw InvalidArgumentException::currencyMismatch();
             }
 
-            // @phpstan-ignore possiblyImpure.methodCall
+            // @phpstan-ignore impure.staticPropertyAccess, possiblyImpure.methodCall
             $amount = self::$calculator::subtract($amount, $subtrahend->amount);
         }
 
@@ -276,7 +276,7 @@ final class Money implements JsonSerializable, Wireable
             $divisor = (string) $divisor;
         }
 
-        // @phpstan-ignore possiblyImpure.methodCall
+        // @phpstan-ignore impure.staticPropertyAccess, possiblyImpure.methodCall
         $quotient = $this->round(self::$calculator::divide($this->amount, $divisor), $roundingMode);
 
         return new self($quotient, $this->currency);
@@ -292,7 +292,7 @@ final class Money implements JsonSerializable, Wireable
         if ($divisor instanceof self) {
             // Note: non-strict equality is intentional here, since `Currency` is `final` and reliable.
             if ($this->currency != $divisor->currency) {
-                throw new InvalidArgumentException('Currencies must be identical');
+                throw InvalidArgumentException::currencyMismatch();
             }
 
             $divisor = $divisor->amount;
@@ -386,7 +386,7 @@ final class Money implements JsonSerializable, Wireable
 
         // Note: non-strict equality is intentional here, since `Currency` is `final` and reliable.
         if ($this->currency != $money->currency) {
-            throw new InvalidArgumentException('Currencies must be identical');
+            throw InvalidArgumentException::currencyMismatch();
         }
 
         return self::$calculator::divide($this->amount, $money->amount);
@@ -403,16 +403,16 @@ final class Money implements JsonSerializable, Wireable
     private function round(string $amount, int $roundingMode): string
     {
         if ($roundingMode === self::ROUND_UP) {
-            // @phpstan-ignore possiblyImpure.methodCall
+            // @phpstan-ignore impure.staticPropertyAccess, possiblyImpure.methodCall
             return self::$calculator::ceil($amount);
         }
 
         if ($roundingMode === self::ROUND_DOWN) {
-            // @phpstan-ignore possiblyImpure.methodCall
+            // @phpstan-ignore impure.staticPropertyAccess, possiblyImpure.methodCall
             return self::$calculator::floor($amount);
         }
 
-        // @phpstan-ignore possiblyImpure.methodCall
+        // @phpstan-ignore impure.staticPropertyAccess, possiblyImpure.methodCall
         return self::$calculator::round($amount, $roundingMode);
     }
 
