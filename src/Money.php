@@ -560,7 +560,13 @@ final class Money implements JsonSerializable, Wireable
         return self::$calculator;
     }
 
-    public function toLivewire()
+    /**
+     * @return array{
+     *  amount: string,
+     *  currency: string
+     * }
+     */
+    public function toLivewire(): array
     {
         return [
             'amount' => $this->getAmount(),
@@ -568,7 +574,11 @@ final class Money implements JsonSerializable, Wireable
         ];
     }
 
-    public static function fromLivewire($value)
+    /**
+     * @param mixed $value
+     * @return static
+     */
+    public static function fromLivewire(mixed $value): static
     {
         $amount = $value['amount'];
         $currency = $value['currency'];
